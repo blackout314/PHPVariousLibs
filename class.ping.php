@@ -19,16 +19,16 @@ class ping {
 	public function __construct( $array ) {
 		foreach( $array as $descr => $host ) {
 			$cmd = "ping -c 1 " . $host . " | tail -1| awk -F '/' '{print $5}'";
-			$this->BUFFER .= $descr . ', ' . exec( $cmd ) . "\n";
+			$this->BUFFER .= ' {"'.$descr . '":"' . exec( $cmd ) . '"},';
 		}
 	}
 	/**
 	 * @name __tostring
 	 * @desc return processed avg ping 
-	 * @return {String} all pings 
+	 * @return {String} all pings in json
 	 */
 	public function __tostring() {
-		return $this->BUFFER;
+		return '{ "ping":[' . substr($this->BUFFER,0,-1) . ']}';
 	}
 }
 ?>
