@@ -57,7 +57,23 @@ $ping = new ping( $array );
 echo $ping->__tostring();
 </code></pre>
 
-      </section>
+
+<h3>class.mining.php</h3>
+
+<pre><code>$btc = new mining( 'YOUR-API-KEY', 'slush' );
+ echo $btc->__getReward();
+</code></pre>
+
+
+<h3>class.who.php</h3>
+
+<pre><code>$who = new who();
+ print_r( $who->__stats() );    // show stats
+ print_r( $who->__get()   );    // show total users
+ print_r( $who->__last()   );   // show last logins
+</code></pre>
+
+</section>
 
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
