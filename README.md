@@ -31,3 +31,12 @@ Retrieve workers info (BTC mining)
  $btc = new mining( 'YOUR-API-KEY', 'slush' );
  echo $btc->__getReward();
 ```
+
+##class.who.php
+
+```php
+ $who = new who();
+ print_r( $who->__stats() );	// show stats
+ print_r( $who->__get()   );	// show total users
+ print_r( $who->__last()   );	// show last logins
+```
