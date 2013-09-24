@@ -34,6 +34,8 @@ Retrieve workers info (BTC mining)
 
 ##class.who.php
 
+Retrieve logged users' info
+
 ```php
  $who = new who();
  print_r( $who->__stats() );	// show stats
