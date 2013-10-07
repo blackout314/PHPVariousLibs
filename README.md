@@ -23,6 +23,28 @@ AVG Ping services class
  echo $ping->__tostring();
 ```
 
+## class.serverLoad.php
+
+AVG Ping services class
+
+```php
+ $load = new serverLoad( array('label'=>'anatema','refresh'=>10) );
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([ <? echo $load->__getJson(); ?> ]);
+        var options = {
+          title: 'Server Load Averages: <?php echo $load->__getTitle(); ?> - Current Load: <?php echo $load->__getCurrentLoad(); ?>',
+          hAxis: {title: 'Server Time', titleTextStyle: {color: 'red'}}
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+</script>
+```
+
 ##class.mining.php
 
 Retrieve workers info (BTC mining)
