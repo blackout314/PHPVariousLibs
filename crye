@@ -1,14 +1,13 @@
 #!/bin/bash
-# crypten - a script to encrypt files using openssl
+# crye
 
 FNAME=$1
 
 if [[ -z "$FNAME" ]]; then
-    echo "crypten <name of file>"
-    echo "  - crypten is a script to encrypt files using des3"
+    echo "crye <name of file>"
+    echo "  - crye is a script to encrypt files using aes and shred original"
     exit;
 fi
-
 
 openssl enc -aes-256-cbc -e -in "$FNAME" -out "cbc.$FNAME"
 shred -u -z -n 26 "$FNAME"

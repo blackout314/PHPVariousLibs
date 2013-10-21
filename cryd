@@ -1,11 +1,11 @@
 #!/bin/bash
-# cryptde - a script to decrypt files using openssl
+# cryd
 
 FNAME=$1
 
 if [[ -z "$FNAME" ]]; then
-    echo "cryptde <name of file>"
-    echo "  - cryptde is a script to decrypt des3 encrypted files"
+    echo "cryd <name of file>"
+    echo "  - cryd is a script to decrypt aes encrypted files"
     exit;
 fi
 
