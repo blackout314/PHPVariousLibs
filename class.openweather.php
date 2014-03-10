@@ -30,7 +30,9 @@ class openweather {
 				break;
 		}
 		if( is_array($params) ) {
-			/* TODO */
+			foreach ($params as $param) {
+			    $this->_OUTPUT[ $param ] = json_decode( file_get_contents( $link.$param ) );
+			}
 		}else{
 			$this->_OUTPUT[ $params ] = json_decode( file_get_contents( $link.$params ) );
 		}
