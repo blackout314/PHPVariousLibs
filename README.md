@@ -64,3 +64,13 @@ Retrieve logged users' info
  print_r( $who->__get()   );	// show total users
  print_r( $who->__last()   );	// show last logins
 ```
+
+# Bash
+
+## cryd
+
+Decrypt with openssl
+
+## crye
+
+Encrypt and shred
