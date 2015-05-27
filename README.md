@@ -65,6 +65,10 @@ Retrieve logged users' info
  print_r( $who->__last()   );	// show last logins
 ```
 
+##simple translate
+
+Call $URL/translate.php?words=YOUR-PHRASE and Enjoy
+
 # Bash
 
 ## cryd
@@ -74,3 +78,4 @@ Decrypt with openssl
 ## crye
 
 Encrypt and shred
+
