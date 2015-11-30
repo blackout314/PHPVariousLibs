@@ -1,6 +1,6 @@
 <?php
 
-function twit($user, $pwd, $status) {
+function twit($user, $pwd, $status, $proxy=null) {
   if (!function_exists("curl_init")) {
     die("twitterSetStatus needs CURL module, please install CURL on your php.");
   }
@@ -8,6 +8,14 @@ function twit($user, $pwd, $status) {
   $ch         = curl_init();
 
   curl_setopt($ch, CURLOPT_URL, "https://mobile.twitter.com/session/new");
+
+  if($proxy) {
+    curl_setopt($ch, CURLOPT_PROXY, $proxy); //"127.0.0.1:9050"
+    curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_VERBOSE, 0);
+  }
+
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
   curl_setopt($ch, CURLOPT_FAILONERROR, 1);
   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -37,4 +45,5 @@ function twit($user, $pwd, $status) {
   curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
   $page       = curl_exec($ch);
 }
+
 
