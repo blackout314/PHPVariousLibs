@@ -65,6 +65,20 @@ Retrieve logged users' info
  print_r( $who->__last()   );	// show last logins
 ```
 
+## twitterbot
+
+Simple Twitter function
+
+```php
+function twit($user, $pwd, $status, $proxy=null)
+/*
+ * @param user username
+ * @param pwd  password
+ * @param status message to twit
+ * @param proxy optional proxy
+ */
+```
+
 ##simple translate
 
 Call $URL/translate.php?words=YOUR-PHRASE and Enjoy
