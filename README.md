@@ -79,6 +79,12 @@ function twit($user, $pwd, $status, $proxy=null)
  */
 ```
 
+## Check TX BTC Confirmation on Blockchain
+```
+$txindex = '4a2b214936425a2a6845b61c75d8cca7f57d0eded04d09064c986883b3fc9a7d';
+echo print_r( check_tx_by_index( $txindex,  '13vHWR3iLsHeYwT42RnuKYNBoVPrKKZgRv') );
+```
+
 ##simple translate
 
 Call $URL/translate.php?words=YOUR-PHRASE and Enjoy
